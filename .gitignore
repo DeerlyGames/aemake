@@ -10,9 +10,12 @@
 *.user
 *.suo
 *.sln
+*.vcxproj
+*.vcxproj.filters
 *.db
 *.opendb
 *.ilk
+*.vx
 # Win64
 
 # Qt Creator

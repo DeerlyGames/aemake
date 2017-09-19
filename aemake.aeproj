@@ -89,6 +89,7 @@ if _ACTION == "clean" then
 	os.rmdir(".vs")
 	os.remove("aemake.VC.db")
 	os.remove("aemake.vcxproj")
+	os.remove("aemake.vcxproj.filters")
 	os.remove("aemake.make")
 	os.remove("*.sln")
 	os.remove("*.sdf")
