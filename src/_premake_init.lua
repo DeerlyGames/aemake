@@ -1615,6 +1615,12 @@
 		description = "Display version information"
 	}
 
+	newoption
+	{
+		trigger     = "watch",
+		description = "Run in loop and rebuild automatically"
+	}
+
 	if http ~= nil then
 		newoption {
 			trigger = "insecure",
