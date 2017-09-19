@@ -1,0 +1,98 @@
+solution 	"aemake"
+	architecture "amd64"
+	configurations { "Release", "Debug" }
+	location ""
+	flags { "No64BitChecks", "StaticRuntime", "MultiProcessorCompile" }
+	warnings "Extra"
+
+	filter "configurations:Debug"
+		defines     "_DEBUG"
+		symbols     "On"
+
+	filter "configurations:Release"
+		defines     "NDEBUG"
+		optimize    "Full"
+		flags       { "NoBufferSecurityCheck", "NoRuntimeChecks" }
+
+	filter "action:vs*"
+		defines     { "_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS", "_CRT_NONSTDC_NO_WARNINGS" }
+
+	filter { "system:windows", "configurations:Release" }
+		flags       { "NoIncrementalLink", "LinkTimeOptimization" }
+
+	filter { "system:macosx", "action:gmake" }
+		buildoptions { "-mmacosx-version-min=10.4" }
+		linkoptions  { "-mmacosx-version-min=10.4" }
+
+project 	"aemake"
+	objdir		"Build/%{cfg.systemarch}"
+	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
+	kind 		"ConsoleApp"
+	language 	"C"
+
+	files 
+	{ 
+		"contrib/lua/src/*.c",
+		"contrib/lua/src/*.h",
+	--	"contrib/luashim/*.c",
+		"contrib/luashim/*.h",
+		"modules/**.lua",
+		"scripts/**.lua",
+		"src/**.c",
+		"src/**.h",
+		"src/**.lua",
+		"*.cpp",
+		"*.h"
+	}
+
+	excludes
+	{ 	
+--		"src/host/premake_main.c",
+		"contrib/lua/src/lauxlib.c",
+		"contrib/lua/src/lua.c",
+		"contrib/lua/src/luac.c",
+		"contrib/lua/src/print.c"
+	}
+
+	includedirs
+	{ 	
+		"src/host",
+		"contrib/lua/src",
+		"contrib/luashim"
+	}
+
+	include ("scripts/embed.lua")
+
+	filter "system:windows"
+		files{	"aemake.rc"}
+
+	filter "system:linux or bsd or hurd"
+		defines     { "LUA_USE_POSIX", "LUA_USE_DLOPEN" }
+		links       { "m" }
+		linkoptions { "-rdynamic" }
+
+	filter "system:linux"
+		links       { "dl", "rt" }
+
+	configuration "macosx"
+		defines     { "LUA_USE_MACOSX" }
+		links       { "CoreServices.framework" }
+
+	filter { "system:macosx", "action:gmake" }
+		toolset "clang"
+		buildoptions { "-mmacosx-version-min=10.9" }
+		linkoptions  { "-mmacosx-version-min=10.9" }
+
+if _ACTION == "clean" then
+	os.rmdir("aemake.xcworkspace")
+	os.rmdir("Build")
+	os.rmdir(".vs")
+	os.remove("aemake.VC.db")
+	os.remove("aemake.vcxproj")
+	os.remove("aemake.make")
+	os.remove("*.sln")
+	os.remove("*.sdf")
+	os.remove("*.opendb")
+	os.remove("*.opensdf")
+	os.remove("Makefile")
+end
