@@ -345,7 +345,7 @@ public:
 
 		Next();
 	}
-	
+
 	const std::string& Get() const {
 		return current;
 	}
@@ -392,7 +392,7 @@ int main(int argc, const char** argv)
 	}
 
 	if (z == OKAY) {
-	//	z = premake_execute(L, argc, argv, "src/_premake_main.lua");
+		z = premake_execute(L, argc, argv, "src/_premake_main.lua");
 	}
 
 	lua_close(L);

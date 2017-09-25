@@ -1,5 +1,4 @@
 solution 	"aemake"
-	system "linux"
 	architecture "amd64"
 	configurations { "Release", "Debug" }
 	location ""

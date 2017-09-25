@@ -1747,3 +1747,52 @@
 		systemarch "Win64"
 
 	filter {}
+
+	newoption
+	{
+		trigger     = "target",
+		value 		= "VALUE",
+		description = "Set target platform",
+		allowed = {
+			{ "Android64", 		"Android (64 Bit)" },
+			{ "AndroidArm32", 	"Android Arm v7a (32 Bit)" },
+			{ "AndroidArm64", 	"Android Arm v8a (64 Bit)" },
+			{ "AndroidMips64", 	"Android Mips (64 Bit)" },	
+			{ "Linux64", 		"Linux (64 Bit)" },
+			{ "MacOS",			"MacOS (64 Bit)"},
+			{ "Web", 			"Emscripten (HTML5)" },
+			{ "Win64", 			"Windows (64 Bit)" },			
+		}
+	}
+
+	if not _OPTIONS["target"] then
+		if os.host() == "linux" then
+			_OPTIONS["target"]="Linux64"
+		end
+		if os.host() == "macosx" then
+			_OPTIONS["target"]="MacOS"
+		end
+		if os.host() == "windows" then
+			_OPTIONS["target"]="Win64"
+		end
+	end
+
+	filter "options:target=Android32"
+		system 			"android"
+		architecture 	"x32"
+
+	filter "options:target=Android64"
+		system 			"android"
+		architecture 	"x64"
+
+	filter "options:target=Linux64"
+		system 			"Linux"
+		architecture 	"x64"
+
+	filter "options:target=MacOS"
+		system 			"macosx"
+		architecture 	"x64"
+
+	filter "options:target=Win64"
+		system 			"Windows"
+		architecture 	"x64"	
