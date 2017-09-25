@@ -1,4 +1,5 @@
 solution 	"aemake"
+	system "linux"
 	architecture "amd64"
 	configurations { "Release", "Debug" }
 	location ""
@@ -28,7 +29,7 @@ project 	"aemake"
 	objdir		"Build/%{cfg.systemarch}"
 	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
 	kind 		"ConsoleApp"
-	language 	"C"
+	language 	"C++"
 
 	files 
 	{ 
@@ -41,13 +42,13 @@ project 	"aemake"
 		"src/**.c",
 		"src/**.h",
 		"src/**.lua",
-		"*.cpp",
+		"source/*.cpp",
 		"*.h"
 	}
 
 	excludes
 	{ 	
---		"src/host/premake_main.c",
+		"src/host/premake_main.c",
 		"contrib/lua/src/lauxlib.c",
 		"contrib/lua/src/lua.c",
 		"contrib/lua/src/luac.c",

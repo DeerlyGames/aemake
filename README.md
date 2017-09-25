@@ -3,7 +3,7 @@
 </p>
 
 ## Overview
-Check the premake [**wiki**](https://github.com/premake/premake-core/wiki) if you need documentation. 
+**aemake** is a superset of premake, so check the premake [**wiki**](https://github.com/premake/premake-core/wiki) if you need documentation. 
 
 **aemake** is invoked in the following way.
 

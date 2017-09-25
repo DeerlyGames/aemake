@@ -26,6 +26,7 @@
 
 # Makefile
 /Makefile
+.make
 
 # XCode
 Entry.xcworkspace/*
