@@ -24,15 +24,12 @@
 		kind = "string",
 		allowed = {
 			"universal",
-			p.X86,
-			p.X86_64,
-			p.ARM,
-		},
-		aliases = {
-			i386  = p.X86,
-			amd64 = p.X86_64,
-			x32   = p.X86,	-- these should be DEPRECATED
-			x64   = p.X86_64,
+			"x86",
+			"x86_64",
+			"armeabi-v7a",
+			"arm64-v8a"
+			--p.X86_64,
+			--p.ARM,
 		},
 	}
 
@@ -1111,6 +1108,7 @@
 			"linux",
 			"macosx",
 			"solaris",
+			"web",
 			"wii",
 			"windows",
 			"xbox360",
@@ -1712,41 +1710,15 @@
 		},
 	}
 
-	local NDK_HOME = "false"
-	local EMSCRIPTEN_HOME = ""
-
-	filter { "system:android", "kind:ConsoleApp or WindowedApp" }
-		pic "On"
-		targetprefix "lib"
-		targetextension ".so"
-		linkoptions{"-shared"}
-
-	filter{ "system:android", "architecture:amd64" }
-		includedirs{	NDK_HOME.."/platforms/%{cfg.system}/arch-x86_64/usr/include",
-						NDK_HOME.."/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86_64/include" }
-		libdirs{ 		NDK_HOME.."/platforms/%{cfg.system}/arch-x86_64/usr/lib",
-						NDK_HOME.."/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86_64" }
-			
-
-	filter { "system:linux" }
-		systemarch "Linux64"
-
-	filter { "system:windows", "architecture:i386" }
-		systemarch "Linux32"		
-	
-	filter { "system:linux", "architecture:amd64" }
-		systemarch "Linux64"
-
-	filter { "system:windows" }
-		systemarch "Win64"
-
-	filter { "system:windows", "architecture:i386" }
-		systemarch "Win32"		
-	
-	filter { "system:windows", "architecture:amd64" }
-		systemarch "Win64"
-
-	filter {}
+	api.register {
+		name = "abi",
+		scope = "config",
+		kind = "string",
+		allowed = {
+			"12",
+			"21",
+		},
+	}
 
 	newoption
 	{
@@ -1754,9 +1726,10 @@
 		value 		= "VALUE",
 		description = "Set target platform",
 		allowed = {
+			{ "Android32", 		"Android (64 Bit)" },
 			{ "Android64", 		"Android (64 Bit)" },
-			{ "AndroidArm32", 	"Android Arm v7a (32 Bit)" },
-			{ "AndroidArm64", 	"Android Arm v8a (64 Bit)" },
+			{ "AndroidArm7", 	"Android Arm v7a (32 Bit)" },
+			{ "AndroidArm8", 	"Android Arm v8a (64 Bit)" },
 			{ "AndroidMips64", 	"Android Mips (64 Bit)" },	
 			{ "Linux64", 		"Linux (64 Bit)" },
 			{ "MacOS",			"MacOS (64 Bit)"},
@@ -1777,22 +1750,163 @@
 		end
 	end
 
+	local EMSCRIPTEN_HOME = ""
+	NDK_HOME = ""
+	if string.contains(_OPTIONS["target"], "Android") then 
+		system "android"
+		abi "21"
+		NDK_HOME = os.getenv("NDK_HOME")
+		if NDK_HOME == nil then
+			NDK_HOME = os.getenv("ANDROID_NDK_HOME")
+			if NDK_HOME == nil then
+				print("Environment variable \"NDK_HOME\" must be set.")
+				os.exit(1)
+			end
+		end
+		includedirs{ NDK_HOME.."/sources/cxx-stl/llvm-libc++/include" }
+
+	end
+	if string.contains(_OPTIONS["target"], "AndroidArm7") then 
+		systemarch "AndroidArm7"
+		architecture "armeabi-v7a"
+	elseif string.contains(_OPTIONS["target"], "AndroidArm8") then 
+		systemarch "AndroidArm8"
+		architecture "arm64-v8a"
+	end
+	if string.contains(_OPTIONS["target"], "Web") then 
+		system "Web"
+		systemarch "Web"
+		EMSCRIPTEN_HOME = os.getenv("EMSCRIPTEN_HOME")
+		if EMSCRIPTEN_HOME == nil then
+			EMSCRIPTEN_HOME = os.getenv("EMSCRIPTEN")
+			if EMSCRIPTEN_HOME == nil then
+				EMSCRIPTEN_HOME = os.getenv("EMSCRIPTEN_ROOT")
+				if EMSCRIPTEN_HOME == nil then
+					print("Set EMSCRIPTEN_HOME enviroment variable.")
+					os.exit()
+				end
+			end
+		end
+	end 
+
+	objdir 		"%{cfg.location}/%{cfg.systemarch}"
+	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
+	
+	filter { "system:android" }
+		objdir( "%{cfg.location}/Android/obj/%{cfg.architecture}" )
+		targetdir( "%{cfg.location}/Android/libs/%{cfg.architecture}" )
+		includedirs { NDK_HOME.."/sources/cxx-stl/llvm-libc++/include" }
+		libdirs { NDK_HOME.."/sources/cxx-stl/llvm-libc++/libs/%{cfg.architecture}" }
+
+	filter { "system:android", "kind:ConsoleApp or WindowedApp or SharedLib" }
+		pic "On"
+		targetprefix "lib"
+		targetextension ".so"
+		linkoptions{"-shared",
+					"-Wl,--unresolved-symbols=report-all",
+					NDK_HOME.."/sources/cxx-stl/llvm-libc++/libs/%{cfg.architecture}/libc++_shared.so",}
+		postbuildcommands{ 	"echo target=android-%{cfg.abi}> Android/project.properties", 
+							"{COPY} "..NDK_HOME.."/sources/cxx-stl/llvm-libc++/libs/%{cfg.architecture}/libc++_shared.so %{cfg.targetdir}"}
+
+	filter{ "system:android", "architecture:armeabi-v7a" }
+		buildoptions{
+			"-march=armv7-a",
+			"-mfloat-abi=softfp",
+			"-Wunused-value"
+		}
+		linkoptions{	"--sysroot "..NDK_HOME.."/platforms/android-%{cfg.abi}/arch-arm",
+						"-march=armv7-a"}
+
+	filter{ "system:android", "architecture:arm64-v8a" }
+		linkoptions{	"--sysroot "..NDK_HOME.."/platforms/android-%{cfg.abi}/arch-arm64",
+						"-march=armv8-a"}
+
+	filter{ "system:android", "architecture:x86" }	
+		buildoptions {
+			"-mtune=atom",
+			"-mstackrealign",
+			"-msse3",
+			"-mfpmath=sse",
+			"-Wunused-value",
+			"-Wundef"
+		}
+		linkoptions{ "--sysroot "..NDK_HOME.."/platforms/android-%{cfg.abi}/arch-x86"}
+
+
+	filter{ "system:android", "architecture:x86_64" }
+		linkoptions{ "--sysroot "..NDK_HOME.."/platforms/android-%{cfg.abi}/arch-x86_64"}
+			
+	filter { "system:android", "kind:StaticLib" }
+		targetextension	".a"
+		targetprefix "lib"
+
+	filter { "system:linux" }
+		systemarch "Linux64"
+
+	filter{ "system:linux", "configurations:Release" }
+		postbuildcommands {
+			"$(SILENT) echo Stripping symbols.",
+			"$(SILENT) strip -s \"$(TARGET)\"" }
+
+	filter { "system:linux", "architecture:x86" }
+		systemarch "Linux32"		
+	
+	filter { "system:linux", "architecture:x86_64" }
+		systemarch "Linux64"
+
+	filter { "system:web" }
+		optimize "Full"
+		toolset "emcc"
+		buildoptions {
+			"-i\"system "..EMSCRIPTEN_HOME.."/system/include\"",
+			"-i\"system "..EMSCRIPTEN_HOME.."/system/include/libc\"",
+			"-Wunused-value",
+		}
+
+	filter { "system:web", "kind:StaticLib" }
+		targetextension	".bc"
+		targetprefix "lib"
+
+	filter { "system:web", "kind:SharedLib" }
+		targetextension	".js"
+		targetprefix "lib"
+		linkoptions{"-s SIDE_MODULE=1"}
+		
+	filter { "system:web", "kind:ConsoleApp or WindowedApp" }
+		targetextension	".html"		
+
+	filter { "system:windows" }
+		systemarch "Win64"
+
+	filter{ "system:windows", "action:gmake", "configurations:Release" }
+		postbuildcommands {
+			"$(SILENT) echo Stripping symbols.",
+			"$(SILENT) strip -s \"$(TARGET)\"" }
+
+	filter { "system:windows", "architecture:x86" }
+		systemarch "Win32"		
+	
+	filter { "system:windows", "architecture:x86_64" }
+		systemarch "Win64"
+
+	filter {}
+
 	filter "options:target=Android32"
 		system 			"android"
-		architecture 	"x32"
+		architecture 	"x86"
 
 	filter "options:target=Android64"
 		system 			"android"
-		architecture 	"x64"
+		architecture 	"x86_64"
 
 	filter "options:target=Linux64"
-		system 			"Linux"
-		architecture 	"x64"
+		system 			"linux"
+		architecture 	"x86_64"
 
 	filter "options:target=MacOS"
 		system 			"macosx"
-		architecture 	"x64"
+		architecture 	"x86_64"
 
 	filter "options:target=Win64"
-		system 			"Windows"
-		architecture 	"x64"	
+		system 			"windows"
+		architecture 	"x86_64"

@@ -60,6 +60,7 @@
 		-- tool APIs
 		"tools/dotnet.lua",
 		"tools/gcc.lua",
+		"tools/emcc.lua",
 		"tools/msc.lua",
 		"tools/snc.lua",
 		"tools/clang.lua",
@@ -68,4 +69,7 @@
 		"actions/clean/_clean.lua",
 
 		"_premake_init.lua",
+
+		-- Must be after premake init. Needs the path to the NDK SDK.
+		"tools/gcc-android.lua",
 	}
