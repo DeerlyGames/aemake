@@ -69,7 +69,7 @@ project 	"aemake"
 	filter "system:linux or bsd or hurd"
 		defines     { "LUA_USE_POSIX", "LUA_USE_DLOPEN" }
 		links       { "m" }
-		linkoptions { "-rdynamic" }
+		linkoptions { "-rdynamic -static-libgcc -static-libstdc++" }
 
 	filter "system:linux"
 		links       { "dl", "rt" }

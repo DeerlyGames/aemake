@@ -11,28 +11,20 @@ endif
 .PHONY: clean prebuild prelink
 
 ifeq ($(config),release)
-  ifeq ($(origin CC), default)
-    CC = emcc
-  endif
-  ifeq ($(origin CXX), default)
-    CXX = em++
-  endif
-  ifeq ($(origin AR), default)
-    AR = emar
-  endif
-  TARGETDIR = Build/Web/Release
-  TARGET = $(TARGETDIR)/aemake.html
-  OBJDIR = Build/Web/Release
-  DEFINES += -DNDEBUG
+  RESCOMP = windres
+  TARGETDIR = Build/Linux64/Release
+  TARGET = $(TARGETDIR)/aemake
+  OBJDIR = Build/Linux64/Release
+  DEFINES += -DNDEBUG -DLUA_USE_POSIX -DLUA_USE_DLOPEN
   INCLUDES += -Isrc/host -Icontrib/lua/src -Icontrib/luashim
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O3 -Wall -Wextra -i"system A:\Emscripten\emscripten\1.37.9/system/include" -i"system A:\Emscripten\emscripten\1.37.9/system/include/libc" -Wunused-value
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O3 -Wall -Wextra -fno-stack-protector -i"system A:\Emscripten\emscripten\1.37.9/system/include" -i"system A:\Emscripten\emscripten\1.37.9/system/include/libc" -Wunused-value
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O3 -Wall -Wextra
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O3 -Wall -Wextra -fno-stack-protector
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS +=
+  LIBS += -lm -ldl -lrt
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s -rdynamic -static-libgcc -static-libstdc++
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -46,28 +38,20 @@ all: prebuild prelink $(TARGET)
 endif
 
 ifeq ($(config),debug)
-  ifeq ($(origin CC), default)
-    CC = emcc
-  endif
-  ifeq ($(origin CXX), default)
-    CXX = em++
-  endif
-  ifeq ($(origin AR), default)
-    AR = emar
-  endif
-  TARGETDIR = Build/Web/Debug
-  TARGET = $(TARGETDIR)/aemake.html
-  OBJDIR = Build/Web/Debug
-  DEFINES += -D_DEBUG
+  RESCOMP = windres
+  TARGETDIR = Build/Linux64/Debug
+  TARGET = $(TARGETDIR)/aemake
+  OBJDIR = Build/Linux64/Debug
+  DEFINES += -D_DEBUG -DLUA_USE_POSIX -DLUA_USE_DLOPEN
   INCLUDES += -Isrc/host -Icontrib/lua/src -Icontrib/luashim
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O3 -g -Wall -Wextra -i"system A:\Emscripten\emscripten\1.37.9/system/include" -i"system A:\Emscripten\emscripten\1.37.9/system/include/libc" -Wunused-value
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O3 -g -Wall -Wextra -i"system A:\Emscripten\emscripten\1.37.9/system/include" -i"system A:\Emscripten\emscripten\1.37.9/system/include/libc" -Wunused-value
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g -Wall -Wextra
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -Wall -Wextra
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS +=
+  LIBS += -lm -ldl -lrt
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -rdynamic -static-libgcc -static-libstdc++
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef

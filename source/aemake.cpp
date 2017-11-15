@@ -56,8 +56,9 @@ std::wstring utf8toUtf16(const std::string & str)
 #pragma warning( pop ) 
 	return wstring(&buffer[0], charsConverted);
 }
-#else 
+#else // Not Windows
 #	include <dirent.h>
+#	include <sys/time.h>
 #endif
 
 #if defined(__linux__)
