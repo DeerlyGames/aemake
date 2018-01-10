@@ -33,6 +33,15 @@ _____________________________________________________________
 | vs2017 	| Generate Visual Studio 2017 project files |
 | xcode4    | Generate Apple Xcode 4 project files |
 
+### Building Qt4.8
+This project relies on the static Qt version, which can be build the following way.
+#### Linux
+```sh
+  $ wget https://download.qt.io/archive/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz
+  $ ./configure -opensource -confirm-license -release -static -nomake tests -nomake examples -no-webkit -no-javascript-jit -no-qt3support -no-declarative -no-scripttools -no-script
+  $ make -j7
+```
+
 ## [License](https://github.com/DeerlyGames/Entry/blob/master/LICENSE)
 
 <a href="http://opensource.org/licenses/BSD-2-Clause" target="_blank">

@@ -1843,10 +1843,15 @@
 	filter { "system:linux" }
 		systemarch "Linux64"
 
-	filter{ "system:linux", "configurations:Release" }
+	filter{ "system:linux", "configurations:Release", "kind:ConsoleApp or WindowedApp" }
 		postbuildcommands {
 			"$(SILENT) echo Stripping symbols.",
 			"$(SILENT) strip -s \"$(TARGET)\"" }
+	
+	filter{ "system:macosx", "configurations:Release", "kind:ConsoleApp or WindowedApp" }
+		postbuildcommands {
+			"$(SILENT) echo Stripping symbols.",
+			"$(SILENT) strip -u -r \"$(TARGET)\"" }	
 
 	filter { "system:linux", "architecture:x86" }
 		systemarch "Linux32"		

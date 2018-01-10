@@ -1,5 +1,5 @@
 solution 	"aemake"
-	architecture "amd64"
+	architecture "x86_64"
 	configurations { "Release", "Debug" }
 	location ""
 	flags { "No64BitChecks", "StaticRuntime", "MultiProcessorCompile" }
@@ -36,6 +36,7 @@ project 	"aemake"
 		"contrib/lua/src/*.h",
 	--	"contrib/luashim/*.c",
 		"contrib/luashim/*.h",
+		"contrib/zlib/*.c",
 		"modules/**.lua",
 		"scripts/**.lua",
 		"src/**.c",
@@ -58,7 +59,10 @@ project 	"aemake"
 	{ 	
 		"src/host",
 		"contrib/lua/src",
-		"contrib/luashim"
+		"contrib/luashim",
+		"contrib/qt5/Include",
+		"contrib/qt5/Include/QtCore",
+		"contrib/qt5/Include/QtGui"
 	}
 
 	include ("scripts/embed.lua")
@@ -72,7 +76,13 @@ project 	"aemake"
 		linkoptions { "-rdynamic -static-libgcc -static-libstdc++" }
 
 	filter "system:linux"
-		links       { "dl", "rt" }
+		links       { "dl", "rt", "pthread", "X11", "Xext" }
+		linkoptions 
+		{ 
+			"contrib/qt5/Lib/Linux64/libQtGui.a",
+			"contrib/qt5/Lib/Linux64/libQtSvg.a",
+			"contrib/qt5/Lib/Linux64/libQtCore.a",
+		}
 
 	configuration "macosx"
 		defines     { "LUA_USE_MACOSX" }
