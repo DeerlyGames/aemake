@@ -12,17 +12,17 @@ MainDialog::MainDialog(QWidget *parent) :
 	QDialog(parent),
 	trayIcon(new SystemTray(this)),
 	trayTimer(new QTimer(0)),
-	ui(new Ui::MainContext),
+//	ui(new Ui::MainContext),
 	cogsMenu(new QMenu(this)),
 	aboutAction(new QAction("About", this)),
 	quitAction(new QAction("Quit", this))
 {
-	ui->setupUi(this);
+//	ui->setupUi(this);
 
-	ui->configurations->addAction(aboutAction);
+//	ui->configurations->addAction(aboutAction);
 
-	ui->settings->setIcon(QIcon(":/resources/icons/antlerConsole.png"));
-	ui->settings->show();
+//	ui->settings->setIcon(QIcon(":/resources/icons/antlerConsole.png"));
+//	ui->settings->show();
 	createWindowSpecs();
 	
 	trayTimer->setInterval(120);
@@ -31,14 +31,14 @@ MainDialog::MainDialog(QWidget *parent) :
 	loop();
 	connect(trayTimer, SIGNAL(timeout()), this, SLOT(openDialog()));
 
-	aboutAction->setIcon(QIcon(QIcon(":/resources/icons/antlerConsole.png").pixmap(QSize(32,32))));
-	connect(aboutAction,  SIGNAL(triggered()), this, SLOT(openAbout()));
-	cogsMenu->addAction(aboutAction);
+//	aboutAction->setIcon(QIcon(QIcon(":/resources/icons/antlerConsole.png").pixmap(QSize(32,32))));
+//	connect(aboutAction,  SIGNAL(triggered()), this, SLOT(openAbout()));
+//	cogsMenu->addAction(aboutAction);
 
-	connect(quitAction, SIGNAL(triggered()), this, SLOT(closeTray()));
-	cogsMenu->addAction(quitAction);
+//	connect(quitAction, SIGNAL(triggered()), this, SLOT(closeTray()));
+//	cogsMenu->addAction(quitAction);
 	
-	ui->settings->setMenu(cogsMenu);
+//	ui->settings->setMenu(cogsMenu);
 
 //	connect(ui->configurations, SIGNAL(triggered()), this, SLOT(setConfiguration()));
 
