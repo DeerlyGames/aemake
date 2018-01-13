@@ -1,7 +1,14 @@
+AEMAKE_TOOL_OS=nil
+if os.host() == "linux" then
+	AEMAKE_TOOL_OS="Linux64"
+elseif os.host() == "macosx" then
+	AEMAKE_TOOL_OS="MacOS"
+elseif os.host() == "windows" then
+	AEMAKE_TOOL_OS="Win64"
+end
+
 solution 	"aemake"
-	architecture "x86_64"
 	configurations { "Release", "Debug" }
-	location ""
 	flags { "No64BitChecks", "StaticRuntime", "MultiProcessorCompile" }
 	warnings "Extra"
 
@@ -25,7 +32,6 @@ solution 	"aemake"
 		linkoptions  { "-mmacosx-version-min=10.4" }
 
 project 	"aemake"
-	objdir		"Build/%{cfg.systemarch}"
 	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
 	kind 		"ConsoleApp"
 	language 	"C++"
@@ -42,8 +48,12 @@ project 	"aemake"
 		"src/**.c",
 		"src/**.h",
 		"src/**.lua",
-		"source/*.cpp",
-		"*.h"
+		"source/**.cpp",
+		"source/**.ui",
+		"source/**.h",
+		"source/**.ui",
+		"*.h",
+		"aemake.qrc"
 	}
 
 	excludes
@@ -58,6 +68,7 @@ project 	"aemake"
 	includedirs
 	{ 	
 		"src/host",
+		"source/generated",
 		"contrib/lua/src",
 		"contrib/luashim",
 		"contrib/qt5/Include",
@@ -65,10 +76,30 @@ project 	"aemake"
 		"contrib/qt5/Include/QtGui"
 	}
 
+if 	os.host() ~= "windows" then
+	prebuildcommands {
+		"chmod u+x \"../../Tools/"..AEMAKE_TOOL_OS.."/rcc\"",
+		"chmod u+x \"../../Tools/"..AEMAKE_TOOL_OS.."/moc\"",
+		"chmod u+x \"../../Tools/"..AEMAKE_TOOL_OS.."/uic\""
+	}
+end
+
 	include ("scripts/embed.lua")
 
 	filter "system:windows"
 		files{	"aemake.rc"}
+		links{ "Gdi32", "Imm32", "Ole32", "Shlwapi", "uuid", "Version", "Winspool", "Ws2_32" }
+
+	filter { "action:gmake","system:windows"}
+		files{	"aemake.rc"}	
+		linkoptions { "-static-libgcc -static-libstdc++" }
+		linkoptions 
+		{ 
+			"../../contrib/qt5/Lib/Win64/libQtGui.a",
+			"../../contrib/qt5/Lib/Win64/libQtSvg.a",
+			"../../contrib/qt5/Lib/Win64/libQtCore.a",
+		}
+	
 
 	filter "system:linux or bsd or hurd"
 		defines     { "LUA_USE_POSIX", "LUA_USE_DLOPEN" }
@@ -79,9 +110,9 @@ project 	"aemake"
 		links       { "dl", "rt", "pthread", "X11", "Xext" }
 		linkoptions 
 		{ 
-			"contrib/qt5/Lib/Linux64/libQtGui.a",
-			"contrib/qt5/Lib/Linux64/libQtSvg.a",
-			"contrib/qt5/Lib/Linux64/libQtCore.a",
+			"../../contrib/qt5/Lib/Linux64/libQtGui.a",
+			"../../contrib/qt5/Lib/Linux64/libQtSvg.a",
+			"../../contrib/qt5/Lib/Linux64/libQtCore.a",
 		}
 
 	configuration "macosx"
@@ -89,9 +120,30 @@ project 	"aemake"
 		links       { "CoreServices.framework" }
 
 	filter { "system:macosx", "action:gmake" }
-		toolset "clang"
 		buildoptions { "-mmacosx-version-min=10.9" }
 		linkoptions  { "-mmacosx-version-min=10.9" }
+
+	filter "files:source/views/*.h"
+		buildmessage 'Compiling %{file.relpath}'
+		buildcommands {
+		  "\"../../Tools/"..AEMAKE_TOOL_OS.."/moc\" \"%{file.relpath}\" -o \"../../source/generated/moc_%{file.basename}.cpp\""
+		}
+		buildoutputs { "../../source/generated/moc_%{file.basename}.cpp" }
+
+	filter "files:source/views/**.ui"
+		buildmessage 'Compiling %{file.relpath}'
+		buildcommands {
+		  "\"../../Tools/"..AEMAKE_TOOL_OS.."/uic\" \"%{file.relpath}\" -o \"../../source/generated/ui_%{file.basename}.h\""
+		}
+		buildoutputs { "source/generated/ui_%{file.basename}.h" }
+
+	filter "files:**.qrc"
+		buildmessage 'Compiling %{file.relpath}'
+		buildcommands {
+		  "\"../../Tools/"..AEMAKE_TOOL_OS.."/rcc\" \"%{file.relpath}\" -o \"../../source/generated/%{file.basename}Resources.cpp\""
+		}
+		buildoutputs { "../../source/generated/%{file.basename}Resources.cpp" }
+
 
 if _ACTION == "clean" then
 	os.rmdir("aemake.xcworkspace")

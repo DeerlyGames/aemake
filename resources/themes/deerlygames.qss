@@ -1,0 +1,111 @@
+QWidget {
+    background-color: #fff;
+    font-family: "Open Sans Light";
+}
+
+QLabel {
+    font-family: "Open Sans Light";
+    border: 0px solid black;
+    background: transparent;
+    color: #222;
+}
+
+QMenu {
+	spacing: 0px;
+    background: #fff;
+    font-family: "Open Sans Light";
+}
+
+QMenu::item
+{
+    background: transparent;
+    color: #222;
+}
+
+QMenu::item:hover {
+    background: #D5A1AA;
+}
+
+QMenu::item:selected {
+    background: #D5A1AA;
+}
+
+QMenuBar {
+ 	font-family: "Open Sans Light";
+    background: #fff;
+}
+
+QMenuBar::item {
+    color: #222;
+}
+
+QSplitter::handle {
+    border: 1px dashed #76797C;
+}
+
+QSplitter::handle:hover {
+    background-color: #787876;
+    border: 1px solid #76797C;
+}
+
+QSplitter::handle:horizontal {
+    width: 1px;
+}
+
+QSplitter::handle:vertical {
+    height: 1px;
+}
+
+QStatusBar {
+    background: rgb(150, 45, 62);
+}
+
+QPushButton {
+	border: 1px solid;
+	border-color: #fff;
+	            border-top: 3px transparent;
+            border-bottom: 3px transparent;
+            border-right: 10px transparent;
+            border-left: 10px transparent;
+}
+
+QProgressBar {
+	border: 1px solid;
+	border-radius: 7px;
+	border-color: #962D3E;
+	padding: 2px;
+	color: "#222";
+}
+
+QProgressBar::chunk {
+	background-color: #fff;
+	border: 1px solid;
+	border-radius: 4px;
+	border-color: #fff;
+}
+
+#configurations {
+    border: 1px solid;
+    border-radius: 7px;
+    border-color: #962D3E;
+}
+
+QDialog {
+    border: 1px solid rgb(150, 45, 62);
+}
+
+
+#MainContext {
+    border: 1px solid rgb(150, 45, 62);
+}
+
+QFrame[frameShape="4"] /* QFrame::HLine == 0x0004 */
+{
+    color: #fff;
+
+}
+
+QFrame[frameShape="5"] /* QFrame::VLine == 0x0005 */
+{
+    color: #fff;
+}

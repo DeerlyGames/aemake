@@ -1,0 +1,39 @@
+language: cpp
+matrix:
+ include:
+  - compiler: gcc
+    os: linux
+  - compiler: clang
+    os: osx
+
+addons:
+ apt:
+  sources:
+   - ubuntu-toolchain-r-test
+  packages:
+   - gcc-4.8
+   - g++-4.8
+
+script:
+ - chmod u+x aemake
+ - ./aemake gmake 
+ - make config=release
+
+notifications:
+ email: false
+
+before_deploy:
+ - git fetch --tags
+
+deploy:
+ provider: releases
+ overwrite: true
+ skip_cleanup: true
+ draft: false
+ api_key:
+  secure: Nmu35xhRP7eGRx24k4fJKViQXClhDqE0N/3jS9Mbu7EwCpjFqXX4yrX3rHgzbnwrfLFdDimrlzNO2N0STbJMGu0Zyg7lL5ce7cEMaPF1YhTpuihBA772LkUg214+tGOgwyPVkUNMt5u+auKZI3F/zgnHSbcK8zQPVPOXhnmaJNP3qQB3XSIJCQXRv3/9c1pMGG+uycuF9hxGyzAjE1SH0Zok0JacDjugvDtdWkbERTko/M5nQ4IKEqw77brV8Db6cvL6g1s1MZoXIaYjMZEFWN9bSrrTjaqXU3dn/+HnDt8zw32JD/sNNkqIF174ioDOlAD8RccRm4PWphBRpnGGXkV3uVnfaw2ctKKvFeoC1yQBZWY/SQ2AlSD4SbsNo8tXcIBPsB+EjpswJu8bKlt6LrEYLNodkVlBD+QOs86AGhLkSpYjNIghp5DnaogBRB3Laz+GNPXgHsggNJoroheSHp6BVIWeyA0ctk5Rey1I9RB2n5vi3P0cSfg41g8YQSoUJyNI0bTLSTPF157YdL4paaPLTEyHq+OhLz05Cq+vodw999WQiMoO0TsEvOF5vegx8UCZoGtHfDgjwuSqUF7fKRnO35opintab98DKYY0lSq3tiFVkNyjUIGb/JzSIajsIW/TvI9cERE9UvqgoV6fPsRVa24w8qbHq8gKyHQRfk0=
+ file_glob: true
+ file:
+  - aemake-*.zip
+ on:
+  tags: true

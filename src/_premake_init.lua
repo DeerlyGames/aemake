@@ -1533,23 +1533,23 @@
 		}
 	}
 
-	newoption
-	{
-		trigger     = "dotnet",
-		value       = "VALUE",
-		description = "Choose a .NET compiler set",
-		allowed = {
-			{ "msnet",   "Microsoft .NET (csc)" },
-			{ "mono",    "Novell Mono (mcs)"    },
-			{ "pnet",    "Portable.NET (cscc)"  },
-		}
-	}
+--	newoption
+--	{
+--		trigger     = "dotnet",
+--		value       = "VALUE",
+--		description = "Choose a .NET compiler set",
+--		allowed = {
+--			{ "msnet",   "Microsoft .NET (csc)" },
+--			{ "mono",    "Novell Mono (mcs)"    },
+--			{ "pnet",    "Portable.NET (cscc)"  },
+--		}
+--	}
 
-	newoption
-	{
-		trigger     = "fatal",
-		description = "Treat warnings from project scripts as errors"
-	}
+--	newoption
+--	{
+--		trigger     = "fatal",
+--		description = "Treat warnings from project scripts as errors"
+--	}
 
 	newoption
 	{
@@ -1717,7 +1717,21 @@
 		allowed = {
 			"12",
 			"21",
-		},
+		}
+	}
+
+	newoption
+	{
+		trigger = "android_ndk",
+		value = "path",
+		description = "Set the path to the Android NDK"
+	}
+
+	newoption
+	{
+		trigger = "android_sdk",
+		value = "path",
+		description = "Set the path to the Android SDK"
 	}
 
 	newoption
@@ -1789,9 +1803,6 @@
 		end
 	end 
 
-	objdir 		"%{cfg.location}/%{cfg.systemarch}"
-	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
-	
 	filter { "system:android" }
 		objdir( "%{cfg.location}/Android/obj/%{cfg.architecture}" )
 		targetdir( "%{cfg.location}/Android/libs/%{cfg.architecture}" )
@@ -1895,6 +1906,10 @@
 		systemarch "Win64"
 
 	filter {}
+
+	location   ("Build/".._OPTIONS["target"])
+	objdir 		"%{cfg.location}"
+	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
 
 	filter "options:target=Android32"
 		system 			"android"

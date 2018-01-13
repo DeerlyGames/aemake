@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   id="svg4237"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="antler -white.svg"
+   inkscape:export-filename="A:\DeerlyGames\Antler\Resources\Icons\antler-white.png"
+   inkscape:export-xdpi="101.6"
+   inkscape:export-ydpi="101.6">
+  <defs
+     id="defs4239" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.070315"
+     inkscape:cx="252.34171"
+     inkscape:cy="226.19715"
+     inkscape:document-units="px"
+     inkscape:current-layer="g4177"
+     showgrid="false"
+     inkscape:window-width="690"
+     inkscape:window-height="405"
+     inkscape:window-x="2387"
+     inkscape:window-y="42"
+     inkscape:window-maximized="0"
+     units="px"
+     borderlayer="false" />
+  <metadata
+     id="metadata4242">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36221)">
+    <g
+       id="g4177"
+       style="fill:#962d3e;fill-opacity:1"
+       transform="matrix(4.2873013,0,0,4.2873013,-116.30424,-3632.8933)">
+      <path
+         sodipodi:nodetypes="cscsc"
+         inkscape:connector-curvature="0"
+         id="path4147"
+         d="m 98.783018,1029.1173 c 0,0 6.978542,-23.0894 15.152292,-31.31476 7.93441,-7.98454 30.30458,-14.89975 30.30458,-14.89975 0,0 -5.48294,23.16451 -13.38452,31.31471 -8.20533,8.4636 -32.072352,14.8998 -32.072352,14.8998 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="csccccsc"
+         inkscape:connector-curvature="0"
+         id="path4158"
+         d="m 29.041884,982.89522 c 0,0 6.13574,23.27018 14.14213,31.56728 7.68565,7.9647 29.799504,14.6472 29.799504,14.6472 l -0.25254,52.0838 23.75889,0 0,-33.5321 c 0,0 -28.119875,-43.5034 -38.4061,-52.39181 -8.402074,-7.2603 -29.041884,-12.37437 -29.041884,-12.37437 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>
