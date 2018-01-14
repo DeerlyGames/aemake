@@ -3,10 +3,14 @@
 #include <QDialog>
 #include "SystemTray.h"
 
-namespace Ui
-{
-	class MainContext;
-}
+class QTimer;
+class QMenu;
+class QAction;
+class QVBoxLayout;
+class QHBoxLayout;
+class QSpacerItem;
+class QPushButton;
+
 
 class MainDialog : public QDialog{
 	Q_OBJECT
@@ -31,8 +35,12 @@ private:
 	void createWindowSpecs();
 	SystemTray*			trayIcon;
 	QTimer*				trayTimer;
-	Ui::MainContext*	ui;
 	QMenu*				cogsMenu;
 	QAction*			aboutAction;
 	QAction*			quitAction;
+	QVBoxLayout*		verticalLayout;
+	QHBoxLayout*		horizontalLayout;
+	QSpacerItem			*horizontalSpacer;
+	QPushButton			*menubutton;
+	QPushButton			*configurationsButton;
 };

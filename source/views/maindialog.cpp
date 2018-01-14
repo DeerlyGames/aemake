@@ -7,6 +7,9 @@
 #include <QInputDialog>
 #include <QMenu>
 #include <QTimer>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QSpacerItem>
 
 MainDialog::MainDialog(QWidget *parent) :
 	QDialog(parent),
@@ -15,7 +18,12 @@ MainDialog::MainDialog(QWidget *parent) :
 //	ui(new Ui::MainContext),
 	cogsMenu(new QMenu(this)),
 	aboutAction(new QAction("About", this)),
-	quitAction(new QAction("Quit", this))
+	quitAction(new QAction("Quit", this)),
+	verticalLayout(new QVBoxLayout(this)),
+	horizontalLayout(new QHBoxLayout()),
+	horizontalSpacer(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum)),
+	menubutton(new QPushButton(this)),
+	configurationsButton(new QPushButton(this))
 {
 //	ui->setupUi(this);
 
@@ -26,6 +34,27 @@ MainDialog::MainDialog(QWidget *parent) :
 	createWindowSpecs();
 	
 	trayTimer->setInterval(120);
+
+	verticalLayout->setSpacing(0);
+	horizontalLayout->setSpacing(0);
+	horizontalLayout->setContentsMargins(1, 1, 1, 0);
+
+	configurationsButton->setFlat(true);
+	configurationsButton->setObjectName(QString::fromUtf8("configurations"));
+	horizontalLayout->addWidget(configurationsButton);
+	horizontalLayout->addItem(horizontalSpacer);
+
+
+	menubutton->setObjectName(QString::fromUtf8("settings"));
+    menubutton->setAutoFillBackground(false);
+	menubutton->setAutoDefault(true);
+    menubutton->setDefault(false);
+    menubutton->setFlat(true);
+	
+	horizontalLayout->addWidget(menubutton);
+
+	verticalLayout->addItem(horizontalLayout);
+
 
 	connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
 	loop();
@@ -68,8 +97,11 @@ void MainDialog::createWindowSpecs()
 
 	QDesktopWidget deskWidget;
 
+	setWindowModality(Qt::WindowModal);
 	setFixedHeight(420);
+	setBaseSize(QSize(420, 360));
 	setFixedWidth(360);
+	setWindowOpacity(1);
 
 	setObjectName("MainContext"); // css styling name
 }
