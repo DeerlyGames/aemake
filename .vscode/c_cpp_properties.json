@@ -37,7 +37,10 @@
                 "${workspaceRoot}",
                 "${workspaceRoot}/src/host",
                 "${workspaceRoot}/contrib/lua/src",
-                "${workspaceRoot}/contrib/luashim"
+                "${workspaceRoot}/contrib/luashim",
+                "${workspaceRoot}/contrib/qt4/Include/QtGui",
+                "${workspaceRoot}/contrib/qt4/Include/QtCore",
+                "${workspaceRoot}/contrib/qt4/Include"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",

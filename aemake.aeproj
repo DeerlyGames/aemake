@@ -9,6 +9,7 @@ end
 
 solution 	"aemake"
 	configurations { "Release", "Debug" }
+	location   ("Build/".._OPTIONS["target"])
 	flags { "No64BitChecks", "StaticRuntime", "MultiProcessorCompile" }
 	warnings "Extra"
 
@@ -35,6 +36,10 @@ project 	"aemake"
 	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
 	kind 		"ConsoleApp"
 	language 	"C++"
+	location   ("Build/".._OPTIONS["target"])
+	objdir 		"%{cfg.location}"
+	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
+
 
 	files 
 	{ 
@@ -69,12 +74,15 @@ project 	"aemake"
 	{ 	
 		"src/host",
 		"source/generated",
+		"source/views",
 		"contrib/lua/src",
 		"contrib/luashim",
-		"contrib/qt5/Include",
-		"contrib/qt5/Include/QtCore",
-		"contrib/qt5/Include/QtGui"
+		"contrib/qt4/Include",
+		"contrib/qt4/Include/QtCore",
+		"contrib/qt4/Include/QtGui"
 	}
+
+	include ("scripts/embed.lua")
 
 if 	os.host() ~= "windows" then
 	prebuildcommands {
@@ -83,8 +91,6 @@ if 	os.host() ~= "windows" then
 		"chmod u+x \"../../Tools/"..AEMAKE_TOOL_OS.."/uic\""
 	}
 end
-
-	include ("scripts/embed.lua")
 
 	filter "system:windows"
 		files{	"aemake.rc"}
@@ -95,9 +101,9 @@ end
 		linkoptions { "-static-libgcc -static-libstdc++" }
 		linkoptions 
 		{ 
-			"../../contrib/qt5/Lib/Win64/libQtGui.a",
-			"../../contrib/qt5/Lib/Win64/libQtSvg.a",
-			"../../contrib/qt5/Lib/Win64/libQtCore.a",
+			"../../contrib/qt4/Lib/Win64/%{cfg.buildcfg}/libQtGui.a",
+			"../../contrib/qt4/Lib/Win64/%{cfg.buildcfg}/libQtSvg.a",
+			"../../contrib/qt4/Lib/Win64/%{cfg.buildcfg}/libQtCore.a",
 		}
 	
 
@@ -110,9 +116,9 @@ end
 		links       { "dl", "rt", "pthread", "X11", "Xext" }
 		linkoptions 
 		{ 
-			"../../contrib/qt5/Lib/Linux64/libQtGui.a",
-			"../../contrib/qt5/Lib/Linux64/libQtSvg.a",
-			"../../contrib/qt5/Lib/Linux64/libQtCore.a",
+			"../../contrib/qt4/Lib/Linux64/%{cfg.buildcfg}/libQtGui.a",
+			"../../contrib/qt4/Lib/Linux64/%{cfg.buildcfg}/libQtSvg.a",
+			"../../contrib/qt4/Lib/Linux64/%{cfg.buildcfg}/libQtCore.a",
 		}
 
 	configuration "macosx"

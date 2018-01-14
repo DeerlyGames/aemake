@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QDialog>
-#include "SystemTray.h"
+#include "systemtray.h"
 
 class QTimer;
 class QMenu;
