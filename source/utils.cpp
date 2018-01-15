@@ -125,9 +125,13 @@ int runPremake(int argc, const char** argv){
 
 void intialSetup()
 {
+#if defined (_WIN32)
+
 	QSettings settings(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/"+qApp->organizationName()+"/"+qApp->applicationName()+"/"+
 						"/AntlerMake.ini", QSettings::IniFormat);
-	
+#else
+	QSettings settings;
+#endif
 
 	const QString ndkPath = settings.value("Android NDK").value<QString>();
 

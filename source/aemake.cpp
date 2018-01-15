@@ -1,11 +1,15 @@
 #include "utils.h"
 #include "views/maindialog.h"
+#include "views/maindialogLegacy.h"
 #include <string>
 #include <string.h>
 #include <QApplication>
 #include <QFile>
 #include <QFontDatabase>
 #include <QTextStream>
+#include <QtPlugin>
+
+Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 
 int main(int argc, char ** argv)
 {
@@ -68,7 +72,7 @@ int main(int argc, char ** argv)
 		}
 
 		app.processEvents();
-		MainDialog dialog;
+		MainDialogLegacy dialog;
 		QObject::connect(&app, SIGNAL(aboutToQuit()), &dialog, SLOT(closeTray()));	
 		return app.exec();
 	}

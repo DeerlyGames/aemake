@@ -76,10 +76,7 @@ project 	"aemake"
 		"source/generated",
 		"source/views",
 		"contrib/lua/src",
-		"contrib/luashim",
-		"contrib/qt4/Include",
-		"contrib/qt4/Include/QtCore",
-		"contrib/qt4/Include/QtGui"
+		"contrib/luashim"
 	}
 
 	include ("scripts/embed.lua")
@@ -95,7 +92,11 @@ end
 	filter "system:windows"
 		files{	"aemake.rc"}
 		links{ "Gdi32", "Imm32", "Ole32", "Shlwapi", "uuid", "Version", "Winspool", "Ws2_32" }
-
+		includedirs{
+			"contrib/qt4/Include",
+			"contrib/qt4/Include/QtCore",
+			"contrib/qt4/Include/QtGui"
+		}
 	filter { "action:gmake","system:windows"}
 		files{	"aemake.rc"}	
 		linkoptions { "-static-libgcc -static-libstdc++" }
@@ -113,12 +114,29 @@ end
 		linkoptions { "-rdynamic -static-libgcc -static-libstdc++" }
 
 	filter "system:linux"
-		links       { "dl", "rt", "pthread", "X11", "Xext" }
+		cppdialect "C++11"
+		links       { "dl", "rt", "pthread", "X11", "Xext", "xcb" }
+		buildoptions{"-fPIC" }
 		linkoptions 
 		{ 
-			"../../contrib/qt4/Lib/Linux64/%{cfg.buildcfg}/libQtGui.a",
-			"../../contrib/qt4/Lib/Linux64/%{cfg.buildcfg}/libQtSvg.a",
-			"../../contrib/qt4/Lib/Linux64/%{cfg.buildcfg}/libQtCore.a",
+			"../../contrib/qt5/Lib/Linux64/libQt5Widgets.a",
+			"../../contrib/qt5/Lib/Linux64/libQt5Gui.a",
+			"../../contrib/qt5/Lib/Linux64/libqtharfbuzz.a",
+			"../../contrib/qt5/Lib/Linux64/libqtlibpng.a",
+			"../../contrib/qt5/Lib/Linux64/libQt5Core.a",
+			"../../contrib/qt5/Lib/Linux64/libqtpcre2.a",
+			"../../contrib/qt5/Lib/Linux64/libqminimal.a",
+			"../../contrib/qt5/Lib/Linux64/libxcb-static.a",
+			"../../contrib/qt5/Lib/Linux64/libqxcb.a",
+			"../../contrib/qt5/Lib/Linux64/libQt5XcbQpa.a",
+			--
+			
+		}
+		includedirs{
+			"contrib/qt5/Include",
+			"contrib/qt5/Include/QtCore",
+			"contrib/qt5/Include/QtGui",
+			"contrib/qt5/Include/QtWidgets"
 		}
 
 	configuration "macosx"

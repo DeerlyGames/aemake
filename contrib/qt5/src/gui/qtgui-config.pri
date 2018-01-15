@@ -1,0 +1,17 @@
+QT.gui.enabled_features = accessibility action clipboard colornames cssparser cursor desktopservices imageformat_xpm draganddrop opengl imageformatplugin highdpiscaling im image_heuristic_mask image_text imageformat_bmp imageformat_jpeg imageformat_png imageformat_ppm imageformat_xbm movie pdf picture sessionmanager shortcut standarditemmodel systemtrayicon tabletevent texthtmlparser textodfwriter validator whatsthis wheelevent
+QT.gui.disabled_features = opengles2 dynamicgl angle combined-angle-lib opengles3 opengles31 openvg
+QT.gui.QT_CONFIG = accessibility action clipboard colornames cssparser cursor desktopservices imageformat_xpm draganddrop opengl freetype imageformatplugin harfbuzz highdpiscaling ico im image_heuristic_mask image_text imageformat_bmp imageformat_jpeg imageformat_png imageformat_ppm imageformat_xbm kms movie pdf picture sessionmanager shortcut standarditemmodel systemtrayicon tabletevent texthtmlparser textodfwriter validator whatsthis wheelevent
+QT.gui.exports = QT_DEFAULT_QPA_PLUGIN
+QT_DEFAULT_QPA_PLUGIN = qxcb
+QT.gui_private.enabled_features = xcb evdev freetype gif harfbuzz ico jpeg kms linuxfb multiprocess png vnc xcb-glx xcb-render xlib xcb-xlib xkb
+QT.gui_private.disabled_features = accessibility-atspi-bridge angle_d3d11_qdtd direct2d directfb egl egl_x11 eglfs eglfs_brcm eglfs_egldevice eglfs_gbm eglfs_mali eglfs_viv eglfs_viv_wl system-freetype fontconfig integrityfb integrityhid libinput libinput-axis-api mirclient mtdev system-harfbuzz system-jpeg system-png system-xcb tslib xcb-sm xinput2 xkbcommon-system xkbcommon-evdev
+QT.gui_private.libraries = xcb opengl drm xcb_glx xcb_xlib
+QMAKE_LIBS_XCB = -lxcb
+QMAKE_LIBS_OPENGL = -lGL
+QMAKE_INCDIR_OPENGL = /usr/include/libdrm
+QMAKE_LIBS_DRM = -ldrm
+QMAKE_INCDIR_DRM = /usr/include/libdrm
+QMAKE_X11_PREFIX = /usr
+QMAKE_LIBS_XCB_GLX = -lxcb-glx -lxcb
+QMAKE_LIBS_XCB_XLIB = -lX11-xcb -lX11 -lxcb
+QMAKE_XKB_CONFIG_ROOT = /usr/share/X11/xkb

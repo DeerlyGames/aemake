@@ -9,6 +9,7 @@ SystemTray::SystemTray(QWidget *parent) :
 	QSystemTrayIcon(QIcon(":/resources/icons/antler-white.png"), parent)
 //	trayTimer(new QTimer(0)),
 {
+	setIcon(QIcon(":/resources/icons/antler-white.png"));
 #if _WIN32
 	setIcon(QIcon(":/resources/icons/antler-white.png"));
 #else 

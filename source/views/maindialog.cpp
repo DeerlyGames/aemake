@@ -1,10 +1,11 @@
 #include "maindialog.h"
-#include "ui_maindialog.h"
 #include "../utils.h"
 #include <QAction>
+#include <QApplication>
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QInputDialog>
+#include <QPushButton>
 #include <QMenu>
 #include <QTimer>
 #include <QVBoxLayout>
