@@ -8,11 +8,16 @@
 #include <QPushButton>
 #include <QMenu>
 #include <QTimer>
+#include <QString>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QSpacerItem>
+#include <QRegExp>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
-MainDialog::MainDialog(QWidget *parent) :
+MainDialog::MainDialog(QWidget *parent, const QString& filePath) :
 	QDialog(parent),
 	trayIcon(new SystemTray(this)),
 	trayTimer(new QTimer(0)),
@@ -24,7 +29,8 @@ MainDialog::MainDialog(QWidget *parent) :
 	horizontalLayout(new QHBoxLayout()),
 	horizontalSpacer(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum)),
 	menubutton(new QPushButton(this)),
-	configurationsButton(new QPushButton(this))
+	configurationsButton(new QPushButton(this)),
+	file(new QFile(filePath))
 {
 //	ui->setupUi(this);
 
@@ -60,22 +66,50 @@ MainDialog::MainDialog(QWidget *parent) :
 	connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayClicked(QSystemTrayIcon::ActivationReason)));
 	loop();
 	connect(trayTimer, SIGNAL(timeout()), this, SLOT(openDialog()));
+	printf("file open\n");
+/*	if (!file->open(QFile::ReadOnly | QFile::Text)) return;
+	printf("textstream\n");
+	QTextStream in(file);
+	printf("readall\n");
+	QString str = in.readAll();
+	printf("printing\n", str.toStdString().c_str());*/
 
-//	aboutAction->setIcon(QIcon(QIcon(":/resources/icons/antlerConsole.png").pixmap(QSize(32,32))));
-//	connect(aboutAction,  SIGNAL(triggered()), this, SLOT(openAbout()));
-//	cogsMenu->addAction(aboutAction);
+	std::ifstream f("aemake.aeproj");
+    std::stringstream buffer;
 
-//	connect(quitAction, SIGNAL(triggered()), this, SLOT(closeTray()));
-//	cogsMenu->addAction(quitAction);
+    buffer << f.rdbuf();
+    QString str =QString::fromStdString( buffer.str() );
+	QRegExp rx("watching(\\s|\\n)*{(.|\\n)*?}");
+	QStringList list;
+	int pos = 0;
+
+	while ((pos = rx.indexIn(str, pos)) != -1) {
+		list << rx.cap(1);
+		pos += rx.matchedLength();
+	}
+//	QStringList wathingBlock = str.split("watching(\\s|\\n)*{(.|\\n)*?}",QString::SkipEmptyParts );
+	foreach(QString files, list)
+	{
+		std::cout << files.toStdString();
+	}
+//	std::cout << str.toStdString();
 	
-//	ui->settings->setMenu(cogsMenu);
+	//	aboutAction->setIcon(QIcon(QIcon(":/resources/icons/antlerConsole.png").pixmap(QSize(32,32))));
+	//	connect(aboutAction,  SIGNAL(triggered()), this, SLOT(openAbout()));
+	//	cogsMenu->addAction(aboutAction);
 
-//	connect(ui->configurations, SIGNAL(triggered()), this, SLOT(setConfiguration()));
+	//	connect(quitAction, SIGNAL(triggered()), this, SLOT(closeTray()));
+	//	cogsMenu->addAction(quitAction);
 
+	//	ui->settings->setMenu(cogsMenu);
+
+	//	connect(ui->configurations, SIGNAL(triggered()), this, SLOT(setConfiguration()));
+	
 }
 
 MainDialog::~MainDialog()
 {
+	delete file;
 }
 
 void MainDialog::closeTray()
@@ -169,6 +203,18 @@ void MainDialog::loop()
 
 void MainDialog::openAbout()
 {
+	
+}
+
+void MainDialog::visibility(bool _show)
+{
+	if(_show){
+		show();
+		trayIcon->show();
+	}else{
+		hide();
+		trayIcon->hide();
+	}
 }
 
 void MainDialog::setConfiguration()

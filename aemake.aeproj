@@ -7,6 +7,10 @@ elseif os.host() == "windows" then
 	AEMAKE_TOOL_OS="Win64"
 end
 
+watching {
+	""
+}
+
 solution 	"aemake"
 	configurations { "Release", "Debug" }
 	location   ("Build/".._OPTIONS["target"])
@@ -32,7 +36,7 @@ solution 	"aemake"
 		buildoptions { "-mmacosx-version-min=10.4" }
 		linkoptions  { "-mmacosx-version-min=10.4" }
 
-project 	"aemake"
+project "aemake"
 	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
 	kind 		"ConsoleApp"
 	language 	"C++"
@@ -97,7 +101,8 @@ end
 			"contrib/qt4/Include/QtCore",
 			"contrib/qt4/Include/QtGui"
 		}
-	filter { "action:gmake","system:windows"}
+
+	filter { "action:gmake","system:windows", "configurations:Release"}
 		files{	"aemake.rc"}	
 		linkoptions { "-static-libgcc -static-libstdc++" }
 		linkoptions 
@@ -105,6 +110,18 @@ end
 			"../../contrib/qt4/Lib/Win64/%{cfg.buildcfg}/libQtGui.a",
 			"../../contrib/qt4/Lib/Win64/%{cfg.buildcfg}/libQtSvg.a",
 			"../../contrib/qt4/Lib/Win64/%{cfg.buildcfg}/libQtCore.a",
+		}
+	filter { "action:gmake","system:windows", "configurations:Debug"}
+		files{	"aemake.rc"}
+		linkoptions 
+		{ 
+			"../../contrib/qt4/Lib/Win64/Debug/libQtGui4.a",
+			"../../contrib/qt4/Lib/Win64/Debug/libQtSvg4.a",
+			"../../contrib/qt4/Lib/Win64/Debug/libQtCore4.a",
+		}
+		postbuildcommands {
+			"copy \"..\\..\\contrib\\qt4\\Lib\\Win64\\Debug\\QtCore4.dll\" \"Debug\\\"",
+			"copy \"..\\..\\contrib\\qt4\\Lib\\Win64\\Debug\\QtGui4.dll\" \"Debug\\\""
 		}
 	
 

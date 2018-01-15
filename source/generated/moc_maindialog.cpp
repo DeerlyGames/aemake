@@ -1,62 +1,25 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'maindialog.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.3)
+** Created by: The Qt Meta Object Compiler version 63 (Qt 4.8.6)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
 #include "../views/maindialog.h"
-#include <QtCore/qbytearray.h>
-#include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'maindialog.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.3. It"
+#elif Q_MOC_OUTPUT_REVISION != 63
+#error "This file was generated using the moc from 4.8.6. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_MainDialog_t {
-    QByteArrayData data[13];
-    char stringdata0[143];
-};
-#define QT_MOC_LITERAL(idx, ofs, len) \
-    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_MainDialog_t, stringdata0) + ofs \
-        - idx * sizeof(QByteArrayData)) \
-    )
-static const qt_meta_stringdata_MainDialog_t qt_meta_stringdata_MainDialog = {
-    {
-QT_MOC_LITERAL(0, 0, 10), // "MainDialog"
-QT_MOC_LITERAL(1, 11, 9), // "closeTray"
-QT_MOC_LITERAL(2, 21, 0), // ""
-QT_MOC_LITERAL(3, 22, 11), // "trayClicked"
-QT_MOC_LITERAL(4, 34, 33), // "QSystemTrayIcon::ActivationRe..."
-QT_MOC_LITERAL(5, 68, 1), // "e"
-QT_MOC_LITERAL(6, 70, 10), // "closeEvent"
-QT_MOC_LITERAL(7, 81, 12), // "QCloseEvent*"
-QT_MOC_LITERAL(8, 94, 5), // "event"
-QT_MOC_LITERAL(9, 100, 10), // "openDialog"
-QT_MOC_LITERAL(10, 111, 16), // "setConfiguration"
-QT_MOC_LITERAL(11, 128, 4), // "loop"
-QT_MOC_LITERAL(12, 133, 9) // "openAbout"
-
-    },
-    "MainDialog\0closeTray\0\0trayClicked\0"
-    "QSystemTrayIcon::ActivationReason\0e\0"
-    "closeEvent\0QCloseEvent*\0event\0openDialog\0"
-    "setConfiguration\0loop\0openAbout"
-};
-#undef QT_MOC_LITERAL
-
 static const uint qt_meta_data_MainDialog[] = {
 
  // content:
-       7,       // revision
+       6,       // revision
        0,       // classname
        0,    0, // classinfo
        7,   14, // methods
@@ -66,32 +29,31 @@ static const uint qt_meta_data_MainDialog[] = {
        0,       // flags
        0,       // signalCount
 
- // slots: name, argc, parameters, tag, flags
-       1,    0,   49,    2, 0x0a /* Public */,
-       3,    1,   50,    2, 0x0a /* Public */,
-       6,    1,   53,    2, 0x0a /* Public */,
-       9,    0,   56,    2, 0x0a /* Public */,
-      10,    0,   57,    2, 0x0a /* Public */,
-      11,    0,   58,    2, 0x0a /* Public */,
-      12,    0,   59,    2, 0x0a /* Public */,
-
- // slots: parameters
-    QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 4,    5,
-    QMetaType::Void, 0x80000000 | 7,    8,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
+ // slots: signature, parameters, type, tag, flags
+      12,   11,   11,   11, 0x0a,
+      26,   24,   11,   11, 0x0a,
+      79,   73,   11,   11, 0x0a,
+     104,   11,   11,   11, 0x0a,
+     117,   11,   11,   11, 0x0a,
+     136,   11,   11,   11, 0x0a,
+     143,   11,   11,   11, 0x0a,
 
        0        // eod
+};
+
+static const char qt_meta_stringdata_MainDialog[] = {
+    "MainDialog\0\0closeTray()\0e\0"
+    "trayClicked(QSystemTrayIcon::ActivationReason)\0"
+    "event\0closeEvent(QCloseEvent*)\0"
+    "openDialog()\0setConfiguration()\0loop()\0"
+    "openAbout()\0"
 };
 
 void MainDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
+        Q_ASSERT(staticMetaObject.cast(_o));
         MainDialog *_t = static_cast<MainDialog *>(_o);
-        Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->closeTray(); break;
         case 1: _t->trayClicked((*reinterpret_cast< QSystemTrayIcon::ActivationReason(*)>(_a[1]))); break;
@@ -105,22 +67,29 @@ void MainDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
     }
 }
 
-const QMetaObject MainDialog::staticMetaObject = {
-    { &QDialog::staticMetaObject, qt_meta_stringdata_MainDialog.data,
-      qt_meta_data_MainDialog,  qt_static_metacall, nullptr, nullptr}
+const QMetaObjectExtraData MainDialog::staticMetaObjectExtraData = {
+    0,  qt_static_metacall 
 };
 
+const QMetaObject MainDialog::staticMetaObject = {
+    { &QDialog::staticMetaObject, qt_meta_stringdata_MainDialog,
+      qt_meta_data_MainDialog, &staticMetaObjectExtraData }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &MainDialog::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
 
 const QMetaObject *MainDialog::metaObject() const
 {
-    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
 void *MainDialog::qt_metacast(const char *_clname)
 {
-    if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_MainDialog.stringdata0))
-        return static_cast<void*>(this);
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_MainDialog))
+        return static_cast<void*>(const_cast< MainDialog*>(this));
     return QDialog::qt_metacast(_clname);
 }
 
@@ -133,12 +102,7 @@ int MainDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
         _id -= 7;
-    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
-            *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 7;
     }
     return _id;
 }
-QT_WARNING_POP
 QT_END_MOC_NAMESPACE

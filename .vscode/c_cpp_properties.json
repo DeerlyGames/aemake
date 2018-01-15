@@ -38,9 +38,10 @@
                 "${workspaceRoot}/src/host",
                 "${workspaceRoot}/contrib/lua/src",
                 "${workspaceRoot}/contrib/luashim",
-                "${workspaceRoot}/contrib/qt4/Include/QtGui",
-                "${workspaceRoot}/contrib/qt4/Include/QtCore",
-                "${workspaceRoot}/contrib/qt4/Include"
+                "${workspaceRoot}/contrib/qt5/Include/QtGui",
+                "${workspaceRoot}/contrib/qt5/Include/QtCore",
+                "${workspaceRoot}/contrib/qt5/Include/QtWidgets",
+                "${workspaceRoot}/contrib/qt5/Include"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
@@ -65,7 +66,11 @@
             "name": "Win32",
             "includePath": [
                 "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
-                "${workspaceRoot}"
+                "${workspaceRoot}",
+                "${workspaceRoot}/source",
+                "${workspaceRoot}/contrib/qt4/Include/QtGui",
+                "${workspaceRoot}/contrib/qt4/Include/QtCore",
+                "${workspaceRoot}/contrib/qt4/Include"
             ],
             "defines": [
                 "_DEBUG",

@@ -7,9 +7,11 @@
 #include <QFile>
 #include <QFontDatabase>
 #include <QTextStream>
-#include <QtPlugin>
 
+#if defined(__linux__)
+#include <QtPlugin>
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
+#endif
 
 int main(int argc, char ** argv)
 {
@@ -17,9 +19,10 @@ int main(int argc, char ** argv)
 	std::string inputFile;
 	std::string action;
 	bool watching = false;
+	bool visible = false;
 	
 	if(argc==1){
-		watching = true;
+		watching = visible = true;
 	}else{
 		for(int i = 1; i < argc; ++i){
 			const char * arg = argv[i];
@@ -72,7 +75,8 @@ int main(int argc, char ** argv)
 		}
 
 		app.processEvents();
-		MainDialogLegacy dialog;
+		MainDialog dialog(NULL, QString("A:/DeerlyGames/aemake/aemake.aeproj"));
+		
 		QObject::connect(&app, SIGNAL(aboutToQuit()), &dialog, SLOT(closeTray()));	
 		return app.exec();
 	}

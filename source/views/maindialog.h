@@ -3,6 +3,7 @@
 #include <QDialog>
 #include "systemtray.h"
 
+class QFile;
 class QTimer;
 class QMenu;
 class QAction;
@@ -15,10 +16,12 @@ class QPushButton;
 class MainDialog : public QDialog{
 	Q_OBJECT
 public:
-	explicit MainDialog(QWidget *parent = 0);
+	explicit MainDialog(QWidget *parent = 0, const QString& filePath= "");
 	~MainDialog();
 
-public slots:
+	void visibility(bool _show);
+
+  public slots:
 	void closeTray();
 
 	void trayClicked(QSystemTrayIcon::ActivationReason e);
@@ -32,6 +35,8 @@ public slots:
 	void openAbout();
 
 private:
+
+
 	void createWindowSpecs();
 	SystemTray*			trayIcon;
 	QTimer*				trayTimer;
@@ -43,4 +48,6 @@ private:
 	QSpacerItem			*horizontalSpacer;
 	QPushButton			*menubutton;
 	QPushButton			*configurationsButton;
+	QFile*				file;
+
 };
