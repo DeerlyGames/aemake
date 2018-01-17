@@ -34,7 +34,7 @@ _____________________________________________________________
 
 
 
-## [License](https://github.com/DeerlyGames/Entry/blob/master/LICENSE)
+## [License](https://github.com/DeerlyGames/aemake/blob/master/LICENSE)
 
 <a href="http://opensource.org/licenses/BSD-2-Clause" target="_blank">
 <img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">

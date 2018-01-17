@@ -81,10 +81,11 @@ end
 
 	filter "system:windows"
 		files{	"aemake.rc"}
-	--	links{ "Gdi32", "Imm32"}
+		links{ "Gdi32", "Imm32", "Ole32", "Version"}
 
-	filter { "action:gmake","system:windows", "configurations:Release"}
+	filter { "action:gmake", "system:windows", "configurations:Release"}
 		linkoptions { "-static-libgcc -static-libstdc++" }
+		postbuildcommands{"\"..\\..\\zip\" -rj ../../aemake-%{cfg.system}.zip Release/aemake.exe"}
 
 	filter "system:linux or bsd or hurd"
 		defines     { "LUA_USE_POSIX", "LUA_USE_DLOPEN" }
@@ -101,6 +102,9 @@ end
 	filter { "system:macosx", "action:gmake" }
 		buildoptions { "-mmacosx-version-min=10.9" }
 		linkoptions  { "-mmacosx-version-min=10.9" }
+
+	filter { "system:linux or macosx", "configurations:Release"}
+		postbuildcommands{"zip -rj ../../aemake-%{cfg.system}.zip Release/aemake"}
 
 if _ACTION == "clean" then
 	os.rmdir("aemake.xcworkspace")

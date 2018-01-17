@@ -1613,12 +1613,6 @@
 		description = "Display version information"
 	}
 
-	newoption
-	{
-		trigger     = "watch",
-		description = "Run in loop and rebuild automatically"
-	}
-
 	if http ~= nil then
 		newoption {
 			trigger = "insecure",
@@ -1736,6 +1730,13 @@
 
 	newoption
 	{
+		trigger = "emscripten_sdk",
+		value = "path",
+		description = "Set the path to the Emscripten SDK"
+	}
+
+	newoption
+	{
 		trigger     = "target",
 		value 		= "VALUE",
 		description = "Set target platform",
@@ -1751,6 +1752,8 @@
 			{ "Win64", 			"Windows (64 Bit)" },			
 		}
 	}
+
+
 
 	if not _OPTIONS["target"] then
 		if os.host() == "linux" then
