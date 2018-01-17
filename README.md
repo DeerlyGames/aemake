@@ -17,7 +17,6 @@
 | --cc=gcc			| Choose the GNU GCC compiler set. 			|
 | --help			| Diplay the help information. 				|
 | --version			| Display the version number. 				|
-| --watch			| Run in loop and rebuild automatically 	|
 
 _____________________________________________________________
 
@@ -33,24 +32,7 @@ _____________________________________________________________
 | vs2017 	| Generate Visual Studio 2017 project files |
 | xcode4    | Generate Apple Xcode 4 project files |
 
-### Building Qt4.8
-This project relies on the static Qt version, which can be build the following way.
 
-#### Linux
-```sh
-  $ wget https://download.qt.io/archive/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz | tar xvz -C qt-everywhere-opensource-src-4.8.6
-  $ ./configure -opensource -confirm-license -release -static -nomake tests -nomake examples -no-webkit -no-javascript-jit -no-qt3support -no-declarative -no-scripttools -no-script
-  $ make -j7
-```
-#### Windows MinGW
-Download the mingw64, and add it to path.
-Add this to mkspecs/win32-g++/qmake.conf
-QMAKE_LFLAGS		= -static -static-libgcc -static-libstdc++
-
-```sh
-  $ configure -platform win32-g++ -opensource -confirm-license -release -static -nomake tests -nomake examples -no-webkit -no-qt3support -no-declarative -no-scripttools -no-script -no-vcproj -no-s60 -no-incredibuild-xge -no-cetest -no-xmlpatterns -no-accessibility -no-exceptions 
-  $ mingw32-make -j7
-```
 
 ## [License](https://github.com/DeerlyGames/Entry/blob/master/LICENSE)
 

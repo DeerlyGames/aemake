@@ -7,10 +7,6 @@ elseif os.host() == "windows" then
 	AEMAKE_TOOL_OS="Win64"
 end
 
-watching {
-	""
-}
-
 solution 	"aemake"
 	configurations { "Release", "Debug" }
 	location   ("Build/".._OPTIONS["target"])
@@ -49,25 +45,17 @@ project "aemake"
 	{ 
 		"contrib/lua/src/*.c",
 		"contrib/lua/src/*.h",
-	--	"contrib/luashim/*.c",
 		"contrib/luashim/*.h",
 		"contrib/zlib/*.c",
 		"modules/**.lua",
 		"scripts/**.lua",
 		"src/**.c",
 		"src/**.h",
-		"src/**.lua",
-		"source/**.cpp",
-		"source/**.ui",
-		"source/**.h",
-		"source/**.ui",
-		"*.h",
-		"aemake.qrc"
+		"src/**.lua"
 	}
 
 	excludes
-	{ 	
-		"src/host/premake_main.c",
+	{
 		"contrib/lua/src/lauxlib.c",
 		"contrib/lua/src/lua.c",
 		"contrib/lua/src/luac.c",
@@ -77,8 +65,6 @@ project "aemake"
 	includedirs
 	{ 	
 		"src/host",
-		"source/generated",
-		"source/views",
 		"contrib/lua/src",
 		"contrib/luashim"
 	}
@@ -95,35 +81,10 @@ end
 
 	filter "system:windows"
 		files{	"aemake.rc"}
-		links{ "Gdi32", "Imm32", "Ole32", "Shlwapi", "uuid", "Version", "Winspool", "Ws2_32" }
-		includedirs{
-			"contrib/qt4/Include",
-			"contrib/qt4/Include/QtCore",
-			"contrib/qt4/Include/QtGui"
-		}
+	--	links{ "Gdi32", "Imm32"}
 
 	filter { "action:gmake","system:windows", "configurations:Release"}
-		files{	"aemake.rc"}	
 		linkoptions { "-static-libgcc -static-libstdc++" }
-		linkoptions 
-		{ 
-			"../../contrib/qt4/Lib/Win64/%{cfg.buildcfg}/libQtGui.a",
-			"../../contrib/qt4/Lib/Win64/%{cfg.buildcfg}/libQtSvg.a",
-			"../../contrib/qt4/Lib/Win64/%{cfg.buildcfg}/libQtCore.a",
-		}
-	filter { "action:gmake","system:windows", "configurations:Debug"}
-		files{	"aemake.rc"}
-		linkoptions 
-		{ 
-			"../../contrib/qt4/Lib/Win64/Debug/libQtGui4.a",
-			"../../contrib/qt4/Lib/Win64/Debug/libQtSvg4.a",
-			"../../contrib/qt4/Lib/Win64/Debug/libQtCore4.a",
-		}
-		postbuildcommands {
-			"copy \"..\\..\\contrib\\qt4\\Lib\\Win64\\Debug\\QtCore4.dll\" \"Debug\\\"",
-			"copy \"..\\..\\contrib\\qt4\\Lib\\Win64\\Debug\\QtGui4.dll\" \"Debug\\\""
-		}
-	
 
 	filter "system:linux or bsd or hurd"
 		defines     { "LUA_USE_POSIX", "LUA_USE_DLOPEN" }
@@ -131,30 +92,7 @@ end
 		linkoptions { "-rdynamic -static-libgcc -static-libstdc++" }
 
 	filter "system:linux"
-		cppdialect "C++11"
-		links       { "dl", "rt", "pthread", "X11", "Xext", "xcb" }
-		buildoptions{"-fPIC" }
-		linkoptions 
-		{ 
-			"../../contrib/qt5/Lib/Linux64/libQt5Widgets.a",
-			"../../contrib/qt5/Lib/Linux64/libQt5Gui.a",
-			"../../contrib/qt5/Lib/Linux64/libqtharfbuzz.a",
-			"../../contrib/qt5/Lib/Linux64/libqtlibpng.a",
-			"../../contrib/qt5/Lib/Linux64/libQt5Core.a",
-			"../../contrib/qt5/Lib/Linux64/libqtpcre2.a",
-			"../../contrib/qt5/Lib/Linux64/libqminimal.a",
-			"../../contrib/qt5/Lib/Linux64/libxcb-static.a",
-			"../../contrib/qt5/Lib/Linux64/libqxcb.a",
-			"../../contrib/qt5/Lib/Linux64/libQt5XcbQpa.a",
-			--
-			
-		}
-		includedirs{
-			"contrib/qt5/Include",
-			"contrib/qt5/Include/QtCore",
-			"contrib/qt5/Include/QtGui",
-			"contrib/qt5/Include/QtWidgets"
-		}
+		links       { "dl", "rt" }
 
 	configuration "macosx"
 		defines     { "LUA_USE_MACOSX" }
@@ -163,28 +101,6 @@ end
 	filter { "system:macosx", "action:gmake" }
 		buildoptions { "-mmacosx-version-min=10.9" }
 		linkoptions  { "-mmacosx-version-min=10.9" }
-
-	filter "files:source/views/*.h"
-		buildmessage 'Compiling %{file.relpath}'
-		buildcommands {
-		  "\"../../Tools/"..AEMAKE_TOOL_OS.."/moc\" \"%{file.relpath}\" -o \"../../source/generated/moc_%{file.basename}.cpp\""
-		}
-		buildoutputs { "../../source/generated/moc_%{file.basename}.cpp" }
-
-	filter "files:source/views/**.ui"
-		buildmessage 'Compiling %{file.relpath}'
-		buildcommands {
-		  "\"../../Tools/"..AEMAKE_TOOL_OS.."/uic\" \"%{file.relpath}\" -o \"../../source/generated/ui_%{file.basename}.h\""
-		}
-		buildoutputs { "source/generated/ui_%{file.basename}.h" }
-
-	filter "files:**.qrc"
-		buildmessage 'Compiling %{file.relpath}'
-		buildcommands {
-		  "\"../../Tools/"..AEMAKE_TOOL_OS.."/rcc\" \"%{file.relpath}\" -o \"../../source/generated/%{file.basename}Resources.cpp\""
-		}
-		buildoutputs { "../../source/generated/%{file.basename}Resources.cpp" }
-
 
 if _ACTION == "clean" then
 	os.rmdir("aemake.xcworkspace")
