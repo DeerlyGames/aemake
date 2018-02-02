@@ -1772,16 +1772,18 @@
 	if string.contains(_OPTIONS["target"], "Android") then 
 		system "android"
 		abi "21"
-		NDK_HOME = os.getenv("NDK_HOME")
-		if NDK_HOME == nil then
-			NDK_HOME = os.getenv("ANDROID_NDK_HOME")
+		NDK_HOME = _OPTIONS["android_ndk"]
+		if(NDK_HOME==nil) then
+			NDK_HOME = os.getenv("NDK_HOME")
 			if NDK_HOME == nil then
-				print("Environment variable \"NDK_HOME\" must be set.")
-				os.exit(1)
+				NDK_HOME = os.getenv("ANDROID_NDK_HOME")
+				if NDK_HOME == nil then
+					print("Environment variable \"NDK_HOME\" must be set.")
+					os.exit(1)
+				end
 			end
 		end
 		includedirs{ NDK_HOME.."/sources/cxx-stl/llvm-libc++/include" }
-
 	end
 	if string.contains(_OPTIONS["target"], "AndroidArm7") then 
 		systemarch "AndroidArm7"
@@ -1831,9 +1833,15 @@
 		linkoptions{	"--sysroot "..NDK_HOME.."/platforms/android-%{cfg.abi}/arch-arm",
 						"-march=armv7-a"}
 
+	filter{ "system:android", "architecture:armeabi-v7a", "configurations:Debug", "kind:ConsoleApp or WindowedApp or SharedLib" }
+		postbuildcommands{"{COPY} "..NDK_HOME.."/prebuilt/android-arm/gdbserver %{cfg.targetdir}"}
+
 	filter{ "system:android", "architecture:arm64-v8a" }
 		linkoptions{	"--sysroot "..NDK_HOME.."/platforms/android-%{cfg.abi}/arch-arm64",
 						"-march=armv8-a"}
+
+	filter{ "system:android", "architecture:arm64-v8a", "configurations:Debug", "kind:ConsoleApp or WindowedApp or SharedLib" }
+		postbuildcommands{"{COPY} "..NDK_HOME.."/prebuilt/android-arm64/gdbserver %{cfg.targetdir}"}
 
 	filter{ "system:android", "architecture:x86" }	
 		buildoptions {
@@ -1846,9 +1854,14 @@
 		}
 		linkoptions{ "--sysroot "..NDK_HOME.."/platforms/android-%{cfg.abi}/arch-x86"}
 
+	filter{ "system:android", "architecture:x86", "configurations:Debug", "kind:ConsoleApp or WindowedApp or SharedLib" }
+		postbuildcommands{"{COPY} "..NDK_HOME.."/prebuilt/android-x86/gdbserver %{cfg.targetdir}"}
 
 	filter{ "system:android", "architecture:x86_64" }
 		linkoptions{ "--sysroot "..NDK_HOME.."/platforms/android-%{cfg.abi}/arch-x86_64"}
+
+	filter{ "system:android", "architecture:x86_64", "configurations:Debug", "kind:ConsoleApp or WindowedApp or SharedLib" }
+		postbuildcommands{"{COPY} "..NDK_HOME.."/prebuilt/android-x86_64/gdbserver %{cfg.targetdir}"}
 			
 	filter { "system:android", "kind:StaticLib" }
 		targetextension	".a"
