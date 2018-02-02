@@ -3,6 +3,8 @@
 
 /Win64/
 
+*.zip
+
 # Visual Studio
 .vs
 *.opensdf
