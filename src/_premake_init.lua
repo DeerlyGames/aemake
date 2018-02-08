@@ -1683,7 +1683,7 @@
 	filter { "system:macosx" }
 		toolset "clang"
 
-	filter {}
+    filter {}
 
 	-- Add android to system.		
 
@@ -1874,6 +1874,10 @@
 		postbuildcommands {
 			"$(SILENT) echo Stripping symbols.",
 			"$(SILENT) strip -s \"$(TARGET)\"" }
+
+	filter{ "system:macosx" }
+		systemarch "MacOS"
+
 	
 	filter{ "system:macosx", "configurations:Release", "kind:ConsoleApp or WindowedApp" }
 		postbuildcommands {
@@ -1884,7 +1888,7 @@
 		systemarch "Linux32"		
 	
 	filter { "system:linux", "architecture:x86_64" }
-		systemarch "Linux64"
+		systemarch "Linux64"	
 
 	filter { "system:web" }
 		optimize "Full"

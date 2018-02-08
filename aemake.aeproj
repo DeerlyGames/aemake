@@ -71,14 +71,6 @@ project "aemake"
 
 	include ("scripts/embed.lua")
 
-if 	os.host() ~= "windows" then
-	prebuildcommands {
-		"chmod u+x \"../../Tools/"..AEMAKE_TOOL_OS.."/rcc\"",
-		"chmod u+x \"../../Tools/"..AEMAKE_TOOL_OS.."/moc\"",
-		"chmod u+x \"../../Tools/"..AEMAKE_TOOL_OS.."/uic\""
-	}
-end
-
 	filter "system:windows"
 		files{	"aemake.rc"}
 		links{ "Gdi32", "Imm32", "Ole32", "Version"}
@@ -97,7 +89,7 @@ end
 
 	configuration "macosx"
 		defines     { "LUA_USE_MACOSX" }
-		links       { "CoreServices.framework" }
+		links       { "CoreServices.framework", 	"Foundation.framework", "Security.framework", "readline" }
 
 	filter { "system:macosx", "action:gmake" }
 		buildoptions { "-mmacosx-version-min=10.9" }
